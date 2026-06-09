@@ -62,3 +62,7 @@ export default async function handler(req, res) {
     received: req.body
   });
 }
+const data = await response.json();
+
+console.log("BREVO STATUS:", response.status);
+console.log("BREVO RESPONSE:", data);
