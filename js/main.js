@@ -280,14 +280,10 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
   `;
 
-} else {
-
+}else {
   const err = await response.json();
-
-  console.error(err);
-
-  alert("Something went wrong.");
-
+  console.log("API ERROR:", err);
+  alert(err.error || "Something went wrong");
 }
 
             }
