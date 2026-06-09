@@ -1,7 +1,5 @@
 export default async function handler(req, res) {
-
   try {
-
     const { fullName, email, phone, service, description } = req.body;
 
     const response = await fetch("https://api.brevo.com/v3/contacts", {
@@ -13,23 +11,30 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         email,
-        listIds: [8], // 🔴 CHANGE THIS
+        listIds: [8], // keep your current one for now
         updateEnabled: true
       })
     });
 
     const data = await response.json();
 
+    // 🔴 THIS IS THE IMPORTANT PART
     if (!response.ok) {
       return res.status(400).json({
         error: "Brevo failed",
-        details: data
+        brevo_status: response.status,
+        brevo_response: data
       });
     }
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({
+      success: true,
+      brevo_response: data
+    });
 
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      error: err.message
+    });
   }
 }
