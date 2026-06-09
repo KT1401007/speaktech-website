@@ -23,7 +23,7 @@ export default async function handler(req, res) {
           SERVICE: service,
           DESCRIPTION: description
         },
-        listIds: [8],   // ⚠️ IMPORTANT: replace if your list ID is NOT 2
+        listIds: [],   // ⚠️ IMPORTANT: replace if your list ID is NOT 2
         updateEnabled: true
       })
     });
