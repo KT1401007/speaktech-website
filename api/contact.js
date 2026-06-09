@@ -32,7 +32,7 @@ export default async function handler(req, res) {
             SERVICE: service,
             DESCRIPTION: description
           },
-          listIds: [2],
+          listIds: [8],
           updateEnabled: true
         })
       }
