@@ -1,19 +1,52 @@
 export default async function handler(req, res) {
 
-  const response = await fetch("https://api.brevo.com/v3/contacts", {
-    method: "POST",
-    headers: {
-      "api-key": process.env.BREVO_API_KEY,
-      "content-type": "application/json"
-    },
-    body: JSON.stringify({
-      email: req.body.email,
-      listIds: [8],
-      updateEnabled: true
-    })
-  });
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Method not allowed"
+    });
+  }
 
-  const data = await response.json();
+  const {
+    fullName,
+    email,
+    phone,
+    service,
+    description
+  } = req.body;
 
-  return res.status(response.status).json(data);
+  try {
+
+    const response = await fetch(
+      "https://api.brevo.com/v3/contacts",
+      {
+        method: "POST",
+        headers: {
+          "accept": "application/json",
+          "content-type": "application/json",
+          "api-key": process.env.BREVO_API_KEY
+        },
+        body: JSON.stringify({
+          email,
+          attributes: {
+            PHONE: phone,
+            SERVICE: service,
+            DESCRIPTION: description
+          },
+          listIds: [8],   // ⚠️ replace this with your correct list ID
+          updateEnabled: true
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    return res.status(200).json(data);
+
+  } catch (error) {
+
+    return res.status(500).json({
+      error: error.message
+    });
+
+  }
 }
