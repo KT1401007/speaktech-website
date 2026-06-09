@@ -256,8 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
-                      "apikey": SUPABASE_KEY,
-                      "Authorization": `Bearer ${SUPABASE_KEY}`,
+                      
                       "Prefer": "return=minimal"
                     },
                     body: JSON.stringify({
