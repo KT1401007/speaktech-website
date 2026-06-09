@@ -250,44 +250,45 @@ document.addEventListener("DOMContentLoaded", function () {
                 // SEND TO SUPABASE
                 // =========================
 
-                const response = await fetch(
-                  `${SUPABASE_URL}/rest/v1/contacts`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                      
-                      "Prefer": "return=minimal"
-                    },
-                    body: JSON.stringify({
-                      full_name: fullNameValue,
-                      email: emailValue,
-                      phone: phoneValue,
-                      service: serviceValue,
-                      description: descriptionValue
-                    })
-                  }
-                );
+                const response = await fetch("/api/contact", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    fullName: fullNameValue,
+    email: emailValue,
+    phone: phoneValue,
+    service: serviceValue,
+    description: descriptionValue
+  })
+});
 
-                if (response.status === 201) {
-                  contactForm.innerHTML = `
-                    <div style="
-                      background:#ecfdf5;
-                      border:1px solid #10b981;
-                      padding:24px;
-                      border-radius:12px;
-                      text-align:center;
-                      color:#065f46;
-                    ">
-                      <h3>Thank You!</h3>
-                      <p>We'll contact you within 24 hours.</p>
-                    </div>
-                  `;
-                } else {
-                  const err = await response.json();
-                  console.error("Supabase error:", err);
-                  alert("Something went wrong. Please try again.");
-                }
+                if (response.ok) {
+
+  contactForm.innerHTML = `
+    <div style="
+      background:#ecfdf5;
+      border:1px solid #10b981;
+      padding:24px;
+      border-radius:12px;
+      text-align:center;
+      color:#065f46;
+    ">
+      <h3>Thank You!</h3>
+      <p>We'll contact you within 24 hours.</p>
+    </div>
+  `;
+
+} else {
+
+  const err = await response.json();
+
+  console.error(err);
+
+  alert("Something went wrong.");
+
+}
 
             }
 
