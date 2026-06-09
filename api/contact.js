@@ -1,9 +1,5 @@
 export default async function handler(req, res) {
 
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
   try {
 
     const { fullName, email, phone, service, description } = req.body;
@@ -16,21 +12,14 @@ export default async function handler(req, res) {
         "api-key": process.env.BREVO_API_KEY
       },
       body: JSON.stringify({
-        email: email,
-        attributes: {
-          FIRSTNAME: fullName,
-          PHONE: phone,
-          SERVICE: service,
-          DESCRIPTION: description
-        },
-        listIds: [],   // ⚠️ IMPORTANT: replace if your list ID is NOT 2
+        email,
+        listIds: [8], // 🔴 CHANGE THIS
         updateEnabled: true
       })
     });
 
     const data = await response.json();
 
-    // 🔴 IMPORTANT: show real Brevo response
     if (!response.ok) {
       return res.status(400).json({
         error: "Brevo failed",
@@ -38,16 +27,9 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json({
-      success: true,
-      data
-    });
+    return res.status(200).json({ success: true });
 
   } catch (err) {
-
-    return res.status(500).json({
-      error: err.message
-    });
-
+    return res.status(500).json({ error: err.message });
   }
 }
